@@ -11,7 +11,7 @@ setuptools.setup(
     description="Parses Tanagra description into usable formats.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/reevesba",
+    url="https://github.com/reevesba/tana2tree",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
