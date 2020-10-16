@@ -1,9 +1,10 @@
 # parses Tanagra tree description
 # convert to python tree
 
-import tree as t
+import tana2tree.tree as t
 import time
 import re
+import os
 
 class Tanagra_Parser:
     def __init__(self):
@@ -52,7 +53,7 @@ class Tanagra_Parser:
             -------
             file object for logging 
         '''
-        return open("out/tana2tree_log_" + time.strftime("%Y%m%d-%H%M%S") + ".txt", "w+")
+        return open("tana2tree_log_" + time.strftime("%Y%m%d-%H%M%S") + ".txt", "w+")
 
     def print_tree(self):
         ''' Parameters

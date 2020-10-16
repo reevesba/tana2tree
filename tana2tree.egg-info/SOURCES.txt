@@ -1,6 +1,8 @@
 README.md
 setup.py
 tana2tree/__init__.py
+tana2tree/tana2tree.py
+tana2tree/tree.py
 tana2tree.egg-info/PKG-INFO
 tana2tree.egg-info/SOURCES.txt
 tana2tree.egg-info/dependency_links.txt

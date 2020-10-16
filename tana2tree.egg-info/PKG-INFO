@@ -1,8 +1,8 @@
 Metadata-Version: 2.1
 Name: tana2tree
-Version: 0.0.1
+Version: 0.1.5
 Summary: Parses Tanagra description into usable formats.
-Home-page: https://github.com/reevesba
+Home-page: https://github.com/reevesba/tana2tree
 Author: Bradley Reeves
 Author-email: bradleyaaronreeeves@gmail.com
 License: UNKNOWN
