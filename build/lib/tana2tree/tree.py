@@ -1,3 +1,8 @@
+# Author:   Bradley Reeves <bradleyaaronreeves@gmail.com>
+# Date:     October 18, 2020
+# About:    Converts a Tanagra tree description from HTML
+#           to a usable format.
+
 # chained dictionary class
 # set a dict value given a key list
 class Chain_Dict(dict):

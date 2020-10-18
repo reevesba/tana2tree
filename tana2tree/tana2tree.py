@@ -1,10 +1,11 @@
-# parses Tanagra tree description
-# convert to python tree
+# Author:   Bradley Reeves <bradleyaaronreeves@gmail.com>
+# Date:     October 18, 2020
+# About:    Converts a Tanagra tree description from HTML
+#           to a usable format.
 
 import tana2tree.tree as t
 import time
 import re
-import os
 
 class Tanagra_Parser:
     def __init__(self):
@@ -43,17 +44,6 @@ class Tanagra_Parser:
         '''
         with open(file_name) as file_in:
             return file_in.read()
-
-    def __open_log(self):
-        ''' Parameters
-            ----------
-            self: tanagra parser object
-
-            Returns
-            -------
-            file object for logging 
-        '''
-        return open("tana2tree_log_" + time.strftime("%Y%m%d-%H%M%S") + ".txt", "w+")
 
     def print_tree(self):
         ''' Parameters
@@ -134,10 +124,6 @@ class Tanagra_Parser:
         # <\/?[b]> is bold tags
         descr = re.sub("\(.*?\)|<\/?[b]>", "", descr)
 
-        # open file used to log results
-        log = self.__open_log()
-        log.write("Converting Tanagra tree to Python tree object\n")
-
         # loop through all tags in UL
         while not end:
             if self.__next_tag(descr, start_index):
@@ -166,7 +152,11 @@ class Tanagra_Parser:
                         ss = s[:s.find(">")]
                         op = ">="
 
-                    attr = "".join(c[0] for c in ss.split())
+                    attr = ss.split()
+                    # if multiple words, use first character of each word
+                    # otherwise, use the first two characters of word
+                    if len(attr) > 1: attr = "".join(c[0] for c in attr)
+                    else: attr = attr[0][:2]
                     
                     # get the values
                     # [\d]+[.,\d]+ is values w/ commas
@@ -183,38 +173,39 @@ class Tanagra_Parser:
                     post_fix = 0
                     while labels.count(attr) > 1:
                         post_fix = post_fix + 1
-                        attr = attr + "_" + str(post_fix)
+                        if post_fix == 1: attr = attr + "_" + str(post_fix)
+                        else: attr = attr[:-1] + str(post_fix)
                     labels.append(attr)
                     post_fix = 0
 
                     # insert parent nodes
                     if "op" in parents_ops.keys():
                         if parents_ops["op"] == "<":
-                            log.write("inserting " + attr + " into " + parents_ops["parent"] + " as left child...\n")
                             self.root.insert(parents_ops["parent"], parents_ops["op"],  attr, op, value)
                         else:
-                            log.write("inserting " + attr + " into " + parents_ops["parent"] + " as right child...\n")
                             self.root.insert(parents_ops["parent"], parents_ops["op"], attr, op, value)
                     parents_ops = {"parent": attr, "op": op}
 
                     # insert terminal nodes
                     if "then" in s:
                         # extract the target value
-                        target = s[s.find("target = ") + len("target = "):].replace(" ", "")
+                        if s.find("target") != -1:
+                            target = s[s.find("target = ") + len("target = "):].replace(" ", "")
+                        else:
+                            target = s[s.find("class = ") + len("class = "):].replace(" ", "")
                         
                         # target values should be unique
                         post_fix = 0
                         while target in labels:
                             post_fix = post_fix + 1
-                            target = target + "_" + str(post_fix)
+                            if post_fix == 1: target = target + "_" + str(post_fix)
+                            else: target = target[:-1] + str(post_fix)
                         labels.append(target)
                         post_fix = 0
                         
                         if op == "<":
-                            log.write("inserting " + target + " into " + attr + " as left child...\n")
                             self.root.insert(attr, op, target, None, None)
                         else:
-                            log.write("inserting " + target + " into " + attr + " as right child...\n")
                             self.root.insert(attr, op, target, None, None) 
                         parents_ops = {}            
                 else:
@@ -225,6 +216,5 @@ class Tanagra_Parser:
                 # no more tags found
                 end = True
 
-        log.close()
         return self.root
 

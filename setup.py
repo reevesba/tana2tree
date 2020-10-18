@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tana2tree",
-    version="0.1.5",
+    version="1.1.7",
     author="Bradley Reeves",
     author_email="bradleyaaronreeeves@gmail.com",
     description="Parses Tanagra description into usable formats.",
