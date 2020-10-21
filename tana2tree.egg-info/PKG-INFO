@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: tana2tree
-Version: 1.1.7
+Version: 1.1.16
 Summary: Parses Tanagra description into usable formats.
 Home-page: https://github.com/reevesba/tana2tree
 Author: Bradley Reeves
@@ -23,7 +23,6 @@ Description: # Tanagra Parser
         <code>pip install tana2tree</code>
         
         ## Using tana2tree
-        ### Create input file
         1. Copy results from Tanagra
         
            ![](images/copy-results.png)
@@ -34,22 +33,22 @@ Description: # Tanagra Parser
         
         3. Pass text file in program. 
         
-            <code>
-            import tana2tree as t2t<br>
-            <br>
-            def main():<br>
-                # get tanagra description as input<br>
-                input_file = "example/tanagra-output.txt"<br>
-                <br>
-                # build the tree, returns root node<br>
-                tree = t2t.Tanagra_Parser()<br>
-                print("Tree: ")<br>
+            ```
+            import tana2tree as t2t
+           
+            def main():
+                # get tanagra description as input
+                input_file = "example/tanagra-output.txt"
+                
+                # build the tree, returns root node
+                tree = t2t.Tanagra_Parser()
+                print("Tree: ")
                 print(tree.parse(input_file))
-            </code>
-            <br>  
-            <br>
+            ```
+        
+         
             
-            A full example is given with all available methods [here](https://github.com/reevesba/tana2tree/examples).
+            A full example is given with all available methods [here](https://github.com/reevesba/tana2tree/blob/master/example/example.py).
         
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3

@@ -12,12 +12,12 @@ class Tanagra_Parser:
         ''' Parameters
             ----------
             self: tanagra parser object
-
             Returns
             -------
             None
         '''
         self.root = None
+        self.orig_labels = {}
 
     def __next_tag(self, s, i):
         ''' Parameters
@@ -25,7 +25,6 @@ class Tanagra_Parser:
             self: tanagra parser object
             s: string to search
             i: starting index as integer
-
             Returns
             -------
             next html tag as string 
@@ -37,7 +36,6 @@ class Tanagra_Parser:
             ----------
             self: tanagra parser object
             file_name: path/name of file as string
-
             Returns
             -------
             file as string 
@@ -49,14 +47,31 @@ class Tanagra_Parser:
         ''' Parameters
             ----------
             self: tanagra parser object
-
             Returns
             -------
             None: prints tree to terminal
         '''
         self.root.print_tree()
     
-    def make_dict(self):
+    def set_orig_labels(self, d, u):
+        ''' Parameters
+            ----------
+            self: tanagra parser object
+            d: tree as dict with unique labels
+            u: dict of labels to update
+
+            Returns
+            -------
+            tree as dict with original labels
+        '''
+        for k, v in d.items():
+            if type(v) is dict:
+                self.set_orig_labels(v, u)
+            elif k == "attr":
+                d[k] = u[v]
+        return d
+    
+    def make_dict(self, unique_values=False):
         ''' Parameters
             ----------
             self: tanagra parser object
@@ -65,14 +80,16 @@ class Tanagra_Parser:
             -------
             tree as dict
         '''
-        return self.root.to_dict(self.root.traverse(self.root))
+        d = self.root.to_dict(self.root.traverse(self.root))
+        if unique_values is False:
+            d = self.set_orig_labels(d, self.orig_labels)
+        return d
 
     def get_node(self, attr):
         ''' Parameters
             ----------
             self: tanagra parser object
             attr: node to retrieve as string
-
             Returns
             -------
             node object as list
@@ -83,7 +100,6 @@ class Tanagra_Parser:
         ''' Parameters
             ----------
             self: tanagra parser object
-
             Returns
             -------
             tree nodes as list
@@ -95,7 +111,6 @@ class Tanagra_Parser:
             ----------
             self: tanagra parser object
             input_file: tanagra description
-
             Returns
             -------
             root node of tree
@@ -185,6 +200,7 @@ class Tanagra_Parser:
                         else:
                             self.root.insert(parents_ops["parent"], parents_ops["op"], attr, op, value)
                     parents_ops = {"parent": attr, "op": op}
+                    self.orig_labels[attr] = ss[:-1]
 
                     # insert terminal nodes
                     if "then" in s:
@@ -193,6 +209,9 @@ class Tanagra_Parser:
                             target = s[s.find("target = ") + len("target = "):].replace(" ", "")
                         else:
                             target = s[s.find("class = ") + len("class = "):].replace(" ", "")
+
+                        # store original name
+                        orig_t = target
                         
                         # target values should be unique
                         post_fix = 0
@@ -207,7 +226,8 @@ class Tanagra_Parser:
                             self.root.insert(attr, op, target, None, None)
                         else:
                             self.root.insert(attr, op, target, None, None) 
-                        parents_ops = {}            
+                        parents_ops = {}
+                        self.orig_labels[target] = orig_t         
                 else:
                     # </UL> encountered, so
                     # go up a tree level
@@ -217,4 +237,3 @@ class Tanagra_Parser:
                 end = True
 
         return self.root
-
