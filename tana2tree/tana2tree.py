@@ -131,13 +131,18 @@ class Tanagra_Parser:
         # get Tanagra output
         descr = self.__get_file(input_file)
 
-        # extract the unordered list
-        descr = re.search("<UL>(.*)</UL>", descr).group(0)
-
         # remove noise
         # \(.*?\) is everything between parenthesis
         # <\/?[b]> is bold tags
         descr = re.sub("\(.*?\)|<\/?[b]>", "", descr)
+
+        # extract target column name
+        target_header = re.search("<th>Target attribute</th>", descr).end(0)
+        target_start_i = target_header + self.__next_tag(descr, target_header).end()
+        target_col_name = descr[target_start_i:target_start_i + self.__next_tag(descr, target_start_i).start()][:-1]
+
+        # extract the unordered list
+        descr = re.search("<UL>(.*)</UL>", descr).group(0)
 
         # loop through all tags in UL
         while not end:
@@ -205,10 +210,7 @@ class Tanagra_Parser:
                     # insert terminal nodes
                     if "then" in s:
                         # extract the target value
-                        if s.find("target") != -1:
-                            target = s[s.find("target = ") + len("target = "):].replace(" ", "")
-                        else:
-                            target = s[s.find("class = ") + len("class = "):].replace(" ", "")
+                        target = s[s.find(target_col_name + " = ") + len(target_col_name + " = "):].replace(" ", "")
 
                         # store original name
                         orig_t = target

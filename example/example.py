@@ -45,6 +45,8 @@ def main():
     d = tree.make_dict(unique_values=True)
     print(d)
 
+    print("\n")
+
     print("Tree formatted as dict (original labels):")
     d = tree.make_dict()
     print(d)

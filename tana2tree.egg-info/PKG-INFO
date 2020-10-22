@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: tana2tree
-Version: 1.1.16
+Version: 1.1.18
 Summary: Parses Tanagra description into usable formats.
 Home-page: https://github.com/reevesba/tana2tree
 Author: Bradley Reeves
@@ -49,7 +49,6 @@ Description: # Tanagra Parser
          
             
             A full example is given with all available methods [here](https://github.com/reevesba/tana2tree/blob/master/example/example.py).
-        
 Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
