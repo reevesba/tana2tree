@@ -2,7 +2,8 @@ import tana2tree as t2t
 
 def main():
     # get tanagra description as input
-    input_file = "example/tanagra-output.txt"
+    #input_file = "example/tanagra-output.txt"
+    input_file = "example/seeds_tanagra.txt"
     
     # build the tree, returns root node
     tree = t2t.Tanagra_Parser()

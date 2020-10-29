@@ -172,7 +172,11 @@ class Tanagra_Parser:
                         ss = s[:s.find(">")]
                         op = ">="
 
-                    attr = ss.split()
+                    if ss.find("_") != -1: attr = ss.split("_")
+                    elif ss.find("-") != -1: attr = ss.split("-")
+                    elif ss.find(".") != -1: attr = ss.split(".")
+                    else: attr = ss.split()
+
                     # if multiple words, use first character of each word
                     # otherwise, use the first two characters of word
                     if len(attr) > 1: attr = "".join(c[0] for c in attr)
